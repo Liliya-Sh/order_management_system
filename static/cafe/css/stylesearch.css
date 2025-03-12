@@ -1,0 +1,47 @@
+/*Стили для form поиска*/
+.search {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 1%;
+}
+
+.search p {
+    margin-inline: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label {
+    display: inline-block;
+    min-width: 10px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+. search input[type=text], select {
+    width: 200px;
+    padding: 5px 7px;
+    margin: 8px 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.search button {
+    background-color: white;
+    border-radius: 5px;
+    color: black;
+    padding: 7px 20px;
+    margin: 8px 5px;
+    border: none;
+    cursor: pointer;
+    width: auto;
+}
+
+.search button:hover {
+    opacity: 0.8;
+    background-color: #333;
+    color: white;
+}

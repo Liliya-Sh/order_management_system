@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="menu">
+    <div class="navbar">
+      {% for cat in category %}
+        <a href="#{{cat.slug}}">{{cat.name}}</a>
+      {% endfor %}
+    </div>
+
+    <div class="section_menu">
+      <div class="content">
+        <ul>
+          {% for cat in category %}
+            <li>
+              <div class="category">
+                <div id="{{cat.slug}}"></div>
+                <h1> {{cat.name}} </h1>
+                {% for pr in product %}
+                  {% if pr.category_id == cat.id %}
+                    <div class="column">
+                      <div class="product">
+                        <a href="{{ pr.get_absolute_url}}">
+                          <img id="{{pr.name_product}}" src="{{pr.image.url}}" style="width:100%" alt="{{ pr.name_product}}">
+                        </a>
+                        <div class="container">
+                          <h2>{{pr.name_product}}</h2>
+                          <p>{{pr.description}}</p>
+                          <h2>{{pr.price}} ₽</h2>
+                          <form action="{% url 'cart:cart_add' pr.id %}" method="post">
+                            {% csrf_token %}
+                            {{ cart_product_form }}
+                            <input style="width: 85%" type="submit" value="Добавить в корзину">
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="basket">
+        {% with total_items=cart|length %}
+          {% if total_items > 0 %}
+            <h1>Корзина ({{total_items }})</h1>
+          {% else %}
+            <h2>Ваша корзина пуста</h2>
+          {%endif%}
+        {%endwith%}
+
+        <div class="basket-inf">
+          {% for item in cart %}
+            {% with product=item.product %}
+              <div class="item-in-basket">
+                <a href="{{ product.get_absolute_url }}">
+                  <img src="{% if product.image %}{{ product.image.url }}{% endif %}"
+                       style="width: 51px; height: 50px;">
+                </a>
+                <p>{{ product.name_product }}</p>
+                <form action="{% url 'cart:cart_remove' product.id %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <input type="hidden" name="product_id" value="{{ product.id }}">
+                  <span onclick="this.closest('form').submit();" class="remove-item" title="Удалить товар">×</span>
+                </form>
+              </div>
+
+              <div class="item-actions">
+                <p class="num">{{ item.total_price }}₽</p>
+              </div>
+
+              <hr style="margin: 4px;">
+
+            {% endwith %}
+          {% endfor %}
+
+          {% with total_items=cart|length %}
+            {% if total_items > 0 %}
+              <div class="total">
+                <p><b>Сумма заказа:</b></p>
+                <p class="num"><b>{{ cart.get_total_price }} ₽</b></p>
+              </div>
+
+              <div class="place-an-order">
+                <p class="text-right">
+                  <a href="{% url 'orders:order_create' %}" class="button">Оформить заказ</a>
+                </p>
+              </div>
+            {%endif%}
+          {%endwith%}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

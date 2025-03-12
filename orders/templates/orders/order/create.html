@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="user-order" >
+  <div class="basket-info">
+    {% include "cart/detail.html" %}
+  </div>
+
+  {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+  <div class="order-info">
+    <form method="post" class="order-form">
+      {{ form.as_p }}
+      <p><input class='button' type="submit" value="Оформить заказ"></p>
+      {% csrf_token %}
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+{% load restaurant_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>КУХНЯ</title>
+    <link type="text/css" href="{% static 'cafe/css/style.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/styler.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/stylecart.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/styleorder.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/styleauth.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/styleproduct.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/styletable.css' %}" rel="stylesheet">
+    <link type="text/css" href="{% static 'cafe/css/stylesearch.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="topnav">
+    {% get_menu as menu %}
+    {% for m in menu %}
+      <a href="{% url m.url_name %}">{{m.title}}</a>
+    {% endfor %}
+    <div>
+    {% if user.is_authenticated %}
+      <a href="{% url 'users:logout' %}">Выйти</a>
+      <p class="last"> {{user.username}}</p>
+    {% endif %}
+    </div>
+  </div>
+  <div class="wrapper">
+
+      {% block content %} {% endblock %}
+
+  </div>
+
+  <p onclick="topFunction()" id="myBtn" class="myBtn" title="Вверх">Вверх</p>
+
+  <script>
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn").style.display = "block"; // Показываем кнопку
+        } else {
+            document.getElementById("myBtn").style.display = "none"; // Скрываем кнопку
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; // Для Safari
+        document.documentElement.scrollTop = 0; // Для Chrome, Firefox, IE и Opera
+    }
+  </script>
+</body>
+</html>

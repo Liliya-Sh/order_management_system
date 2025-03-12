@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="product-detail">
+  <div class="content-pr">
+
+    <h1 style="text-align: center; padding: 3%">{{product.name_product}}</h1>
+
+    <div class="pr" style="display: flex; flex-wrap: wrap; justify-content: center; text-align: center; padding: 5%">
+      {% if product.image %}
+      <p><img class="img-article-left" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); border-radius: 4%" src="{{product.image.url}}"></p>
+      {% endif %}
+
+      <div class="pr-descriptio">{{product.description}} <br/><br/> {{product.price}} ₽
+
+      <form action="{% url 'cart:cart_add' product.id %}" method="post" style= "margin-bottom: 5%">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input style="padding: 1%; height: auto" type="submit" value="Добавить в корзину">
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+/*Страница товара*/
+.product-detail{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.content-pr{
+    display: flex;
+    margin-top: 7%;
+    overflow: auto;
+    overflow-x: hidden;
+    margin-bottom: 12%;
+    border: 1px solid white;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 75%;
+}
+
+.pr{
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: center;
+    padding: 5%;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.pr-descriptio{
+    display: flex;
+    text-align: center;
+    padding: inherit;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+}
+.pr form {margin-top: 6%;}

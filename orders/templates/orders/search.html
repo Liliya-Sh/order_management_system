@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Список заказов</h1>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post" class="search">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Поиск</button>
+</form>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>ID заказа</th>
+        <th>Номер стола</th>
+        <th>Список товаров</th>
+        <th>Количество товаров</th>
+        <th>Сумма заказа</th>
+        <th>Статус заказа</th>
+        <th>Удалить заказ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if results %}
+        {% for order in results %}
+        <tr>
+            <td><a href="{{ order.get_absolute_url }}">{{ order.id }}</a></td>
+            <td>{{ order.table_number }}</td>
+            <td>
+              <ul>
+              {% for orderitem in orderitems %}
+                {% if orderitem.order_id == order.id %}
+                <li>{{ orderitem.product }}</li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            </td>
+            <td>
+              <ul>
+              {% for orderitem in orderitems %}
+                {% if orderitem.order_id == order.id %}
+                <li>{{ orderitem.quantity }}</li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            </td>
+            <td>{{ order.get_total_cost }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+              <form action="{% url 'orders:delete' order.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ order.id }}">
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот заказ?');">Удалить</button>
+              </form>
+            </td>
+        </tr>
+        {% endfor %}
+      {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}

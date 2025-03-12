@@ -1,0 +1,45 @@
+
+{% load static %}
+
+<div class="basket-user">
+  {% with total_items=cart|length %}
+    {% if total_items > 0 %}
+      <h2>Корзина ({{total_items }})</h2>
+    {% else %}
+      <h2>Ваша корзина пуста</h2>
+    {%endif%}
+  {%endwith%}
+  <div class="basket-in-order">
+    {% for item in cart %}
+      {% with product=item.product %}
+        <div class="pr-in-basket">
+          <div>
+            <a href="{{ product.get_absolute_url }}">
+              <img src="{{ product.image.url }}" style="width: 130px; height: 130px;">
+            </a>
+          </div>
+          <div>{{ product.name_product }}</div>
+          <div>
+            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+              {% csrf_token %}
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.override }}
+                <input type="submit" value="Изменить">
+            </form>
+          </div>
+          <div>
+            <form action="{% url 'cart:cart_remove' product.id %}" method="post">
+              <input type="submit" value="Удалить">
+              {% csrf_token %}
+            </form>
+          </div>
+          <div>{{ item.total_price }} ₽</div>
+        </div>
+      {% endwith %}
+    {% endfor %}
+        <div class="total-price">
+          <p><b>Итого</b></p>
+          <p class="num"><b>{{ cart.get_total_price }} ₽</b></p>
+        </div>
+  </div>
+</div>

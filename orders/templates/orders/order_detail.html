@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="product-detail">
+  <div class="content-pr">
+
+    <h1 style="text-align: center; padding: 3%">{{order.id}}</h1>
+
+     <table class="table">
+    <thead>
+      <tr>
+        <th>ID заказа</th>
+        <th>Номер стола</th>
+        <th>Список товаров</th>
+        <th>Количество товаров</th>
+        <th>Сумма заказа</th>
+        <th>Статус заказа</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.table_number }}</td>
+        <td>
+          <ul>
+          {% for orderitem in orderitems %}
+            {% if orderitem.order_id == order.id %}
+            <li> {{ orderitem.product }} </li>
+            {% endif %}
+          {% endfor %}
+          </ul>
+        </td>
+        <td>
+          <ul>
+          {% for orderitem in orderitems %}
+            {% if orderitem.order_id == order.id %}
+            <li> {{ orderitem.quantity }} </li>
+            {% endif %}
+          {% endfor %}
+            </ul>
+        </td>
+        <td>{{ order.get_total_cost }}</td>
+        <td>
+          <form method="post" class="status_order">
+            {% csrf_token %}
+            {{ status_form.as_p }}
+            <button type="submit">Сохранить изменения</button>
+          </form>
+        </td>
+      </tr>
+      
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}
